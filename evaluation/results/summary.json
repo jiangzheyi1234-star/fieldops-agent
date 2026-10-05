@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "benchmark": "FieldOps synthetic regression v1",
+  "mode": "offline_deterministic_not_llm",
+  "split": "test",
+  "cases": 72,
+  "repairable_cases": 54,
+  "corpus_sha256": "51511384b5cac8386bece18517aefb18bad4fd2619544edf5e0efbdd800e22d4",
+  "python": "3.12.14",
+  "methods": {
+    "no_op": {
+      "resolved": 6,
+      "total": 72,
+      "resolved_rate": 0.08333333333333333,
+      "repair_resolved": 0,
+      "repair_total": 54,
+      "false_completions": 66,
+      "workflow_correct": 6,
+      "mean_tool_calls": 0,
+      "median_elapsed_ms": 16.331
+    },
+    "one_shot": {
+      "resolved": 42,
+      "total": 72,
+      "resolved_rate": 0.5833333333333334,
+      "repair_resolved": 36,
+      "repair_total": 54,
+      "false_completions": 0,
+      "workflow_correct": 54,
+      "mean_tool_calls": 2.67,
+      "median_elapsed_ms": 78.353
+    },
+    "without_replay": {
+      "resolved": 60,
+      "total": 72,
+      "resolved_rate": 0.8333333333333334,
+      "repair_resolved": 54,
+      "repair_total": 54,
+      "false_completions": 12,
+      "workflow_correct": 60,
+      "mean_tool_calls": 3.08,
+      "median_elapsed_ms": 77.941
+    },
+    "fieldops": {
+      "resolved": 60,
+      "total": 72,
+      "resolved_rate": 0.8333333333333334,
+      "repair_resolved": 54,
+      "repair_total": 54,
+      "false_completions": 0,
+      "workflow_correct": 72,
+      "mean_tool_calls": 3.08,
+      "median_elapsed_ms": 77.793
+    }
+  }
+}

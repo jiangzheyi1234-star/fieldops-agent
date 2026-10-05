@@ -380,7 +380,11 @@ function App() {
                       </option>
                     </select>
                   </label>
-                  <button className="primary" disabled={busy} onClick={create}>
+                  <button
+                    className="primary"
+                    disabled={busy || !scenarios.length}
+                    onClick={create}
+                  >
                     ＋ 新建工单
                   </button>
                 </div>

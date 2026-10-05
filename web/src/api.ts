@@ -3,6 +3,7 @@ export const staticDemo = import.meta.env.VITE_STATIC_DEMO === "1";
 interface Recording {
   initial: Incident;
   diagnosed: Incident;
+  approved: Incident;
   final: Incident;
 }
 interface Recordings {
@@ -10,13 +11,16 @@ interface Recordings {
   recordings: Record<string, Recording>;
   benchmark: Benchmark;
 }
-let loaded: Recordings | undefined;
+let loaded: Promise<Recordings> | undefined;
 const sessions = new Map<string, Incident>();
 async function recordings() {
   if (!loaded)
-    loaded = (await (
-      await fetch(`${import.meta.env.BASE_URL}demo-recordings.json`)
-    ).json()) as Recordings;
+    loaded = fetch(`${import.meta.env.BASE_URL}demo-recordings.json`).then(
+      async (response) => {
+        if (!response.ok) throw new Error("演示记录未能加载，请刷新重试");
+        return (await response.json()) as Recordings;
+      },
+    );
   return loaded;
 }
 export async function request<T>(path: string, body?: unknown): Promise<T> {
@@ -58,7 +62,7 @@ export async function request<T>(path: string, body?: unknown): Promise<T> {
     const current = sessions.get(id);
     if (!record || !current) throw new Error("请先选择一个演示案例");
     if (action === "diagnose") result = structuredClone(record.diagnosed);
-    else if (action === "approve") result = { ...current, status: "approved" };
+    else if (action === "approve") result = structuredClone(record.approved);
     else if (action === "execute") result = structuredClone(record.final);
     else result = current;
     sessions.set(id, result as Incident);

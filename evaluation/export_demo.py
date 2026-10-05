@@ -22,13 +22,20 @@ async def main():
             initial = (await client.post("/api/incidents", json={"scenario": scenario, "seed": 201})).json()
             path = f"/api/incidents/{initial['id']}"
             diagnosed = (await client.post(path + "/diagnose")).json()
+            approved = diagnosed
             final = diagnosed
             if diagnosed["plan"]["actions"]:
-                await client.post(
+                approval_response = await client.post(
                     path + "/approve", json={"plan_hash": diagnosed["plan_hash"], "revision": 0}
                 )
+                approved = approval_response.json()
                 final = (await client.post(path + "/execute")).json()
-            result["recordings"][scenario] = {"initial": initial, "diagnosed": diagnosed, "final": final}
+            result["recordings"][scenario] = {
+                "initial": initial,
+                "diagnosed": diagnosed,
+                "approved": approved,
+                "final": final,
+            }
     output = Path(__file__).resolve().parent.parent / "web/public/demo-recordings.json"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")

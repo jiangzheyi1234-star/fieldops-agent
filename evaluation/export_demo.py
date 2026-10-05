@@ -36,7 +36,7 @@ async def main():
                 "approved": approved,
                 "final": final,
             }
-    output = Path(__file__).resolve().parent.parent / "web/public/demo-recordings.json"
+    output = Path(__file__).resolve().parent.parent / "web/src/demo-recordings.json"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     store.close()

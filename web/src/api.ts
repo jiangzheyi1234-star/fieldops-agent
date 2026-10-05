@@ -1,4 +1,5 @@
 import type { Benchmark, Incident, Scenario } from "./types";
+import demoRecordingsUrl from "./demo-recordings.json?url";
 export const staticDemo = import.meta.env.VITE_STATIC_DEMO === "1";
 interface Recording {
   initial: Incident;
@@ -15,12 +16,10 @@ let loaded: Promise<Recordings> | undefined;
 const sessions = new Map<string, Incident>();
 async function recordings() {
   if (!loaded)
-    loaded = fetch(`${import.meta.env.BASE_URL}demo-recordings.json`).then(
-      async (response) => {
-        if (!response.ok) throw new Error("演示记录未能加载，请刷新重试");
-        return (await response.json()) as Recordings;
-      },
-    );
+    loaded = fetch(demoRecordingsUrl).then(async (response) => {
+      if (!response.ok) throw new Error("演示记录未能加载，请刷新重试");
+      return (await response.json()) as Recordings;
+    });
   return loaded;
 }
 export async function request<T>(path: string, body?: unknown): Promise<T> {
